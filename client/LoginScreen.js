@@ -1,24 +1,24 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
-
-// Importa la función de navegación desde 'react-navigation'
 import { useNavigation } from '@react-navigation/native';
 
-// Define constantes para los colores
 const colors = {
   primary: '#6369a8',
   white: '#fff',
 };
 
 export default function LoginScreen() {
-  // Obtiene la navegación
   const navigation = useNavigation();
 
-  // Función para manejar el inicio de sesión
   const handleLogin = () => {
-    // Aquí puedes implementar la lógica de autenticación
-    // Si la autenticación es exitosa, navega a la pantalla de inicio
+    // Lógica de inicio de sesión aquí...
     navigation.navigate('Home');
+  };
+
+  const handleRegistration = () => {
+    // Lógica de registro aquí...
+    // Después de que el usuario se registre exitosamente, navega a la pantalla de inicio
+    navigation.navigate('Register');
   };
 
   return (
@@ -34,11 +34,10 @@ export default function LoginScreen() {
         placeholder="Contraseña"
         secureTextEntry={true}
       />
-      {/* Maneja el evento onPress para llamar a la función handleLogin */}
       <TouchableOpacity onPress={handleLogin} style={[styles.button, { backgroundColor: colors.primary }]}>
         <Text style={styles.buttonText}>Iniciar Sesión</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={[styles.button, { backgroundColor: colors.white }]}>
+      <TouchableOpacity onPress={handleRegistration} style={[styles.button, { backgroundColor: colors.white }]}>
         <Text style={[styles.buttonText, { color: colors.primary }]}>Registrarse</Text>
       </TouchableOpacity>
     </View>
