@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import NavBar from './NavBar'; // Importamos el componente de NavBar
 
 function GestionarEventosScreen({ navigation }) {
   // Cambiar el título de la barra de navegación
@@ -11,7 +12,11 @@ function GestionarEventosScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+            <NavBar /> 
+
+    <View style={styles.container}>
       <Text>Hello World from GestionarEventosScreen!</Text>
+    </View>
     </View>
   );
 }

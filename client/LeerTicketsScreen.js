@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import NavBar from './NavBar'; // Importamos el componente de NavBar
 
 function LeerTicketsScreen({ navigation }) {
   // Cambiar el título de la barra de navegación
@@ -11,7 +12,10 @@ function LeerTicketsScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+            <NavBar />  
+    <View style={styles.container}>
       <Text>Hello World from LeerTicketsScreen!</Text>
+    </View>
     </View>
   );
 }
