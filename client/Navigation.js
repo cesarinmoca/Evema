@@ -9,6 +9,7 @@ import NuevoEventoScreen from './NuevoEventoScreen';
 import ObservarEventosScreen from './ObservarEventosScreen';
 import LeerTicketsScreen from './LeerTicketsScreen';
 import GestionarEventosScreen from './GestionarEventosScreen';
+import DetallesEventoScreen from './DetallesEventoScreen';
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,7 @@ function AppNavigator() {
         <Stack.Screen name="ObservarEventos" component={ObservarEventosScreen} />
         <Stack.Screen name="LeerTickets" component={LeerTicketsScreen} />
         <Stack.Screen name="GestionarEventos" component={GestionarEventosScreen} />
+        <Stack.Screen name="DetallesEvento" component={DetallesEventoScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

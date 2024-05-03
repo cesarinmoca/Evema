@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import React, { useState, useLayoutEffect } from 'react';
+import { View, Text, StyleSheet, Button, Alert } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import { Platform } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 function NuevoEventoScreen({ navigation }) {
@@ -9,21 +8,47 @@ function NuevoEventoScreen({ navigation }) {
   const [descripcionEvento, setDescripcionEvento] = useState('');
   const [fechaEvento, setFechaEvento] = useState(new Date());
   const [horaEvento, setHoraEvento] = useState(new Date());
+  const [codigoSalida, setCodigoSalida] = useState('');
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
 
+  // Cambiar el título de la pantalla
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: 'Evento',
+    });
+  }, [navigation]);
+
   const handleGuardarEvento = () => {
-    // Tu lógica para guardar el evento
-    console.log('Datos del evento:', {
-      nombreEvento,
-      descripcionEvento,
-      fechaEvento,
-      horaEvento,
+    fetch('http://localhost:3000/eventos', { // Aquí se usa localhost y el puerto correspondiente
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        nombreEvento,
+        descripcionEvento,
+        fechaEvento,
+        horaEvento,
+        codigoSalida,
+      }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Respuesta del servidor:', data);
+      // Aquí podrías mostrar un mensaje de confirmación al usuario o realizar otras acciones necesarias
+    })
+    .catch(error => {
+      console.error('Error al enviar solicitud al servidor:', error);
+      // Aquí podrías mostrar un mensaje de error al usuario o manejar el error de otra manera
     });
   };
+  
+  
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Crear Nuevo Evento</Text>
       <TextInput
         style={styles.input}
         placeholder="Nombre del evento"
@@ -31,13 +56,22 @@ function NuevoEventoScreen({ navigation }) {
         onChangeText={setNombreEvento}
       />
       <TextInput
-        style={[styles.input, { height: 100 }]}
+        style={styles.input}
+        placeholder="Código de Asistencia"
+        value={codigoSalida}
+        onChangeText={setCodigoSalida}
+      />
+      <TextInput
+        style={[styles.input, styles.textArea]}
         placeholder="Descripción del evento"
         value={descripcionEvento}
         onChangeText={setDescripcionEvento}
         multiline
       />
-      <Button title="Seleccionar Fecha" onPress={() => setShowDatePicker(true)} />
+      <View style={styles.buttonContainer}>
+        <Button title="Seleccionar Fecha" onPress={() => setShowDatePicker(true)} />
+        <Text style={styles.dateTimeText}>{fechaEvento.toDateString()}</Text>
+      </View>
       <DateTimePickerModal
         isVisible={showDatePicker}
         mode="date"
@@ -47,8 +81,12 @@ function NuevoEventoScreen({ navigation }) {
         }}
         onCancel={() => setShowDatePicker(false)}
       />
-      <Text>{fechaEvento.toDateString()}</Text>
-      <Button title="Seleccionar Hora" onPress={() => setShowTimePicker(true)} />
+      <View style={styles.buttonContainer}>
+        <Button title="Seleccionar Hora" onPress={() => setShowTimePicker(true)} />
+        <Text style={styles.dateTimeText}>
+          {horaEvento.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+        </Text>
+      </View>
       <DateTimePickerModal
         isVisible={showTimePicker}
         mode="time"
@@ -58,7 +96,6 @@ function NuevoEventoScreen({ navigation }) {
         }}
         onCancel={() => setShowTimePicker(false)}
       />
-      <Text>{horaEvento.toTimeString()}</Text>
       <Button title="Guardar Evento" onPress={handleGuardarEvento} />
     </View>
   );
@@ -71,6 +108,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
   },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
   input: {
     borderWidth: 1,
     borderColor: 'gray',
@@ -78,6 +120,18 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 20,
     width: '100%',
+  },
+  textArea: {
+    height: 100,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+  },
+  dateTimeText: {
+    fontSize: 16,
   },
 });
 
