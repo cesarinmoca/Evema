@@ -17,7 +17,6 @@ export default function LoginScreen() {
 
   const handleRegistration = () => {
     // Lógica de registro aquí...
-    // Después de que el usuario se registre exitosamente, navega a la pantalla de inicio
     navigation.navigate('Register');
   };
 
