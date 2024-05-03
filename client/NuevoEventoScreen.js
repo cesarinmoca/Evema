@@ -1,5 +1,5 @@
 import React, { useState, useLayoutEffect } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, Button, Alert } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
@@ -20,14 +20,30 @@ function NuevoEventoScreen({ navigation }) {
   }, [navigation]);
 
   const handleGuardarEvento = () => {
-    // Tu lógica para guardar el evento
-    console.log('Datos del evento:', {
-      nombreEvento,
-      descripcionEvento,
-      fechaEvento,
-      horaEvento,
-      codigoSalida,
-    });
+    Alert.alert(
+      'Confirmar',
+      '¿Deseas confirmar el evento?',
+      [
+        {
+          text: 'No',
+          style: 'cancel',
+        },
+        {
+          text: 'Sí',
+          onPress: () => {
+            // Tu lógica para guardar el evento
+            console.log('Datos del evento:', {
+              nombreEvento,
+              descripcionEvento,
+              fechaEvento,
+              horaEvento,
+              codigoSalida,
+            });
+          },
+        },
+      ],
+      { cancelable: false }
+    );
   };
 
   return (
