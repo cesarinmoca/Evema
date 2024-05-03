@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 function DetallesEventoScreen({ route, navigation }) {
   // Obtener el evento pasado como parámetro de navegación
@@ -42,6 +42,12 @@ function DetallesEventoScreen({ route, navigation }) {
     }
   };
 
+  // Función para manejar el clic en el botón de "Editar"
+  const handleEditarPress = () => {
+    // Redirigir a la pantalla de edición pasando el evento como parámetro
+    navigation.navigate('EditarEvento', { evento });
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Detalles del Evento</Text>
@@ -53,6 +59,9 @@ function DetallesEventoScreen({ route, navigation }) {
       <View style={styles.divider}></View>
       {renderIntegrantes(evento.staff, 'Staff')}
       {renderIntegrantes(evento.alumnos, 'Alumnos')}
+      <TouchableOpacity style={styles.editarButton} onPress={handleEditarPress}>
+        <Text style={styles.editarButtonText}>Editar</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -100,6 +109,20 @@ const styles = StyleSheet.create({
     borderBottomColor: 'black',
     borderBottomWidth: 1,
     marginBottom: 10,
+  },
+  editarButton: {
+    backgroundColor: '#6369a8',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 20,
+    width: '60%',
+    alignSelf: 'center',
+  },
+  editarButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#fff',
   },
 });
 
