@@ -2,23 +2,22 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 function LeerTicketsScreen({ navigation }) {
-  // Cambiar el título de la barra de navegación
+  // Título de vista
   React.useLayoutEffect(() => {
     navigation.setOptions({
       title: 'Leer Tickets', 
     });
   }, [navigation]);
 
-  // Tickets de ejemplo
   const tickets = [
     { id: 1, nombre: 'Ticket 1', descripcion: 'Descripción del Ticket 1' },
     { id: 2, nombre: 'Ticket 2', descripcion: 'Descripción del Ticket 2' },
     { id: 3, nombre: 'Ticket 3', descripcion: 'Descripción del Ticket 3' },
   ];
 
-  // Función para manejar el clic en un ticket
+  // Evento con clic
   const handleTicketPress = (ticket) => {
-    // Redirigir a otra vista pasando el ticket como parámetro
+    // Vista a la que dirige
     navigation.navigate('DetallesTicket', { ticket });
   };
 

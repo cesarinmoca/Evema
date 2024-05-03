@@ -2,17 +2,17 @@ import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 function DetallesEventoScreen({ route, navigation }) {
-  // Obtener el evento pasado como parámetro de navegación
+  // Evento parámetro 
   const { evento } = route.params;
 
-  // Cambiar el título de la barra de navegación
+  // Título de vista
   useEffect(() => {
     navigation.setOptions({
-      title: evento.nombre, // Utiliza el nombre del evento como título
+      title: evento.nombre,
     });
   }, [evento.nombre, navigation]);
 
-  // Función para renderizar la lista de integrantes
+  // Lista de integrantes
   const renderIntegrantes = (integrantes, tipo) => {
     if (integrantes && integrantes.length > 0) {
       return (
@@ -26,7 +26,7 @@ function DetallesEventoScreen({ route, navigation }) {
         </View>
       );
     } else {
-      // Ejemplos de integrantes
+      // Ejemplos
       const ejemplos = tipo === 'Staff' ? ['Staff 1', 'Staff 2', 'Staff 3'] : ['Alumno 1', 'Alumno 2', 'Alumno 3'];
 
       return (
@@ -42,9 +42,9 @@ function DetallesEventoScreen({ route, navigation }) {
     }
   };
 
-  // Función para manejar el clic en el botón de "Editar"
+  // Evento con clic
   const handleEditarPress = () => {
-    // Redirigir a la pantalla de edición pasando el evento como parámetro
+    // Vista a la que redirige
     navigation.navigate('EditarEvento', { evento });
   };
 

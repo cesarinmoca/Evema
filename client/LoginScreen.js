@@ -11,12 +11,12 @@ export default function LoginScreen() {
   const navigation = useNavigation();
 
   const handleLogin = () => {
-    // Lógica de inicio de sesión aquí...
+    // 
     navigation.navigate('Home');
   };
 
   const handleRegistration = () => {
-    // Lógica de registro aquí...
+    //
     navigation.navigate('Register');
   };
 

@@ -2,23 +2,23 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 function ObservarEventosScreen({ navigation }) {
-  // Cambiar el título de la barra de navegación
+  // Título de la vista
   React.useLayoutEffect(() => {
     navigation.setOptions({
       title: 'Observar Eventos',
     });
   }, [navigation]);
 
-  // Eventos de ejemplo
+  // Ejemplo
   const eventos = [
     { id: 1, nombre: 'Evento 1', descripcion: 'Descripción del Evento 1' },
     { id: 2, nombre: 'Evento 2', descripcion: 'Descripción del Evento 2' },
     { id: 3, nombre: 'Evento 3', descripcion: 'Descripción del Evento 3' },
   ];
 
-  // Función para manejar el clic en un evento
+  // Evento de clic
   const handleEventoPress = (evento) => {
-    // Redirigir a otra vista pasando el evento como parámetro
+    // Vista a la que redirige
     navigation.navigate('DetallesEvento', { evento });
   };
 

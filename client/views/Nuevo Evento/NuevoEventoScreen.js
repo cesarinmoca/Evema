@@ -2,7 +2,7 @@ import React, { useState, useLayoutEffect } from 'react';
 import { View, Text, StyleSheet, Button, Alert } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import { format } from 'date-fns'; // Importa la función format de date-fns
+import { format } from 'date-fns';
 
 function NuevoEventoScreen({ navigation }) {
   const [nombreEvento, setNombreEvento] = useState('');
@@ -13,7 +13,7 @@ function NuevoEventoScreen({ navigation }) {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
 
-  // Cambiar el título de la pantalla
+  // Título de vista
   useLayoutEffect(() => {
     navigation.setOptions({
       title: 'Evento',
@@ -21,9 +21,7 @@ function NuevoEventoScreen({ navigation }) {
   }, [navigation]);
 
   const handleGuardarEvento = () => {
-    // Formatear la fecha utilizando date-fns en el formato esperado por MySQL (YYYY-MM-DD)
     const formattedFechaEvento = format(fechaEvento, 'yyyy-MM-dd');
-
   
     fetch('http://192.168.1.65:3000/eventos', {
     method: 'POST',
@@ -33,7 +31,6 @@ function NuevoEventoScreen({ navigation }) {
     body: JSON.stringify({
       nombreEvento,
       descripcionEvento,
-      // Usar la fecha formateada
       fechaEvento: formattedFechaEvento,
       horaEvento,
       codigoSalida,

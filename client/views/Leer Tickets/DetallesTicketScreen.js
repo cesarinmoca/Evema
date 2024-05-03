@@ -2,13 +2,13 @@ import React, { useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 function DetallesTicketScreen({ route, navigation }) {
-  // Obtener el ticket pasado como parámetro de navegación
+  // Ticket parámetro
   const { ticket } = route.params;
 
-  // Cambiar el título de la barra de navegación
+  // Titulo de vista
   useEffect(() => {
     navigation.setOptions({
-      title: ticket.nombre, // Utiliza el nombre del ticket como título
+      title: ticket.nombre,
     });
   }, [ticket.nombre, navigation]);
 

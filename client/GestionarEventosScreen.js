@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 function GestionarEventosScreen({ navigation }) {
-  // Cambiar el título de la barra de navegación
+  // Título de la vista
   React.useLayoutEffect(() => {
     navigation.setOptions({
       title: 'Gestionar Eventos',

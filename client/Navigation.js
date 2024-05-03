@@ -1,16 +1,14 @@
-// Navigation.js
-
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import LoginScreen from './LoginScreen';
 import HomeScreen from './HomeScreen';
 import RegisterScreen from './RegisterScreen';
-import NuevoEventoScreen from './NuevoEventoScreen';
-import ObservarEventosScreen from './ObservarEventosScreen';
-import LeerTicketsScreen from './LeerTicketsScreen';
+import NuevoEventoScreen from './views/Nuevo Evento/NuevoEventoScreen';
+import ObservarEventosScreen from './views/Observar Evento/ObservarEventosScreen';
+import LeerTicketsScreen from './views/Leer Tickets/LeerTicketsScreen';
 import GestionarEventosScreen from './GestionarEventosScreen';
-import DetallesEventoScreen from './DetallesEventoScreen';
-import DetallesTicketScreen from './DetallesTicketScreen';
+import DetallesEventoScreen from './views/Observar Evento/DetallesEventoScreen';
+import DetallesTicketScreen from './views/Leer Tickets/DetallesTicketScreen';
 
 const Stack = createStackNavigator();
 
