@@ -2,6 +2,7 @@ import React, { useState, useLayoutEffect } from 'react';
 import { View, Text, StyleSheet, Button, Alert } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { format } from 'date-fns'; // Importa la función format de date-fns
 
 function NuevoEventoScreen({ navigation }) {
   const [nombreEvento, setNombreEvento] = useState('');
@@ -20,30 +21,40 @@ function NuevoEventoScreen({ navigation }) {
   }, [navigation]);
 
   const handleGuardarEvento = () => {
-    fetch('http://localhost:3000/eventos', { // Aquí se usa localhost y el puerto correspondiente
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        nombreEvento,
-        descripcionEvento,
-        fechaEvento,
-        horaEvento,
-        codigoSalida,
-      }),
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Respuesta del servidor:', data);
-      // Aquí podrías mostrar un mensaje de confirmación al usuario o realizar otras acciones necesarias
-    })
-    .catch(error => {
-      console.error('Error al enviar solicitud al servidor:', error);
-      // Aquí podrías mostrar un mensaje de error al usuario o manejar el error de otra manera
-    });
-  };
+    // Formatear la fecha utilizando date-fns en el formato esperado por MySQL (YYYY-MM-DD)
+    const formattedFechaEvento = format(fechaEvento, 'yyyy-MM-dd');
+
   
+    fetch('http://192.168.1.65:3000/eventos', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      nombreEvento,
+      descripcionEvento,
+      // Usar la fecha formateada
+      fechaEvento: formattedFechaEvento,
+      horaEvento,
+      codigoSalida,
+    }),
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Error al enviar la solicitud al servidor');
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log('Respuesta del servidor:', data);
+    Alert.alert('Evento guardado correctamente');
+  })
+  .catch(error => {
+    console.error('Error al enviar solicitud al servidor:', error);
+    Alert.alert('Error al guardar el evento');
+  });
+
+  };
   
 
   return (
