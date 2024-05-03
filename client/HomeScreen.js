@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import NavBar from './NavBar'; // Importamos el componente de NavBar
 
 const colors = {
   primary: '#6369a8',
@@ -14,32 +15,10 @@ function HomeScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.welcomeText}>¡Bienvenido a la pantalla de inicio!</Text>
-      <View style={styles.menuContainer}>
-        <TouchableOpacity
-          style={[styles.button, { backgroundColor: colors.primary }]}
-          onPress={() => navigateToScreen('NuevoEvento')}
-        >
-          <Text style={styles.buttonText}>Nuevo Evento</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.button, { backgroundColor: colors.primary }]}
-          onPress={() => navigateToScreen('ObservarEventos')}
-        >
-          <Text style={styles.buttonText}>Observar Eventos</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.button, { backgroundColor: colors.primary }]}
-          onPress={() => navigateToScreen('LeerTickets')}
-        >
-          <Text style={styles.buttonText}>Leer Tickets</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.button, { backgroundColor: colors.primary }]}
-          onPress={() => navigateToScreen('GestionarEventos')}
-        >
-          <Text style={styles.buttonText}>Gestionar Eventos</Text>
-        </TouchableOpacity>
+      <NavBar /> 
+      
+      <View style={styles.contentContainer}>
+        <Text style={styles.welcomeText}>¡Bienvenido a la pantalla de inicio!</Text>
       </View>
     </View>
   );
@@ -48,26 +27,16 @@ function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff', // Ajustamos el color de fondo si es necesario
+  },
+  contentContainer: {
+    flex: 1, // Aseguramos que el contenido se expanda para llenar el espacio restante
     justifyContent: 'center',
     alignItems: 'center',
   },
   welcomeText: {
     fontSize: 18,
     marginBottom: 20,
-  },
-  menuContainer: {
-    marginTop: 20,
-  },
-  button: {
-    padding: 10,
-    marginBottom: 10,
-    borderRadius: 5,
-  },
-  buttonText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: colors.white,
   },
 });
 
