@@ -20,31 +20,31 @@ function NuevoEventoScreen({ navigation }) {
   }, [navigation]);
 
   const handleGuardarEvento = () => {
-    Alert.alert(
-      'Confirmar',
-      '¿Deseas confirmar el evento?',
-      [
-        {
-          text: 'No',
-          style: 'cancel',
-        },
-        {
-          text: 'Sí',
-          onPress: () => {
-            // Tu lógica para guardar el evento
-            console.log('Datos del evento:', {
-              nombreEvento,
-              descripcionEvento,
-              fechaEvento,
-              horaEvento,
-              codigoSalida,
-            });
-          },
-        },
-      ],
-      { cancelable: false }
-    );
+    fetch('http://localhost:3000/eventos', { // Aquí se usa localhost y el puerto correspondiente
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        nombreEvento,
+        descripcionEvento,
+        fechaEvento,
+        horaEvento,
+        codigoSalida,
+      }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Respuesta del servidor:', data);
+      // Aquí podrías mostrar un mensaje de confirmación al usuario o realizar otras acciones necesarias
+    })
+    .catch(error => {
+      console.error('Error al enviar solicitud al servidor:', error);
+      // Aquí podrías mostrar un mensaje de error al usuario o manejar el error de otra manera
+    });
   };
+  
+  
 
   return (
     <View style={styles.container}>
