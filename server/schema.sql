@@ -2,7 +2,7 @@ CREATE DATABASE EVEMA;
 
 USE EVEMA;
 
--- Tabla de Usuarios:
+--Tabla de Usuarios:
 CREATE TABLE Usuarios (
 id INT AUTO_INCREMENT PRIMARY KEY,
 nombre_usuario VARCHAR(50) NOT NULL,
@@ -10,7 +10,7 @@ contrasena VARCHAR(50) NOT NULL,
 rol ENUM('Gestor', 'Usuario') NOT NULL
 );
 
--- Tabla de Eventos:
+--Tabla de Eventos:
 CREATE TABLE Eventos (
 id INT AUTO_INCREMENT PRIMARY KEY,
 nombre VARCHAR(100) NOT NULL,
@@ -21,7 +21,7 @@ id_usuario_creador INT NOT NULL,
 FOREIGN KEY (id_usuario_creador) REFERENCES Usuarios(id)
 );
 
--- Tabla de Postulaciones:
+--Tabla de Postulaciones:
 CREATE TABLE Postulaciones (
 id INT AUTO_INCREMENT PRIMARY KEY,
 id_evento INT NOT NULL,
@@ -31,7 +31,7 @@ FOREIGN KEY (id_evento) REFERENCES Eventos(id),
 FOREIGN KEY (id_usuario) REFERENCES Usuarios(id)
 );
 
--- Tabla de Tickets:
+--Tabla de Tickets:
 CREATE TABLE Tickets (
 id INT AUTO_INCREMENT PRIMARY KEY,
 id_evento INT NOT NULL,
@@ -41,7 +41,7 @@ FOREIGN KEY (id_evento) REFERENCES Eventos(id),
 FOREIGN KEY (id_usuario) REFERENCES Usuarios(id)
 );
 
--- Tabla de Asistencias:
+--Tabla de Asistencias:
 CREATE TABLE Asistencias (
 id INT AUTO_INCREMENT PRIMARY KEY,
 id_evento INT NOT NULL,
@@ -52,8 +52,11 @@ FOREIGN KEY (id_evento) REFERENCES Eventos(id),
 FOREIGN KEY (id_usuario) REFERENCES Usuarios(id)
 );
 
--- Tabla de Roles:
+--Tabla de Roles:
 CREATE TABLE Roles (
 id INT AUTO_INCREMENT PRIMARY KEY,
 nombre_rol VARCHAR(50) NOT NULL
 );
+
+--Maestro:
+INSERT INTO Usuarios (nombre_usuario, contrasena, rol) VALUES ('Maestro', 'password', 'Gestor');

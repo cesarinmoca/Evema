@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -9,14 +9,31 @@ const colors = {
 
 export default function LoginScreen() {
   const navigation = useNavigation();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // 
-    navigation.navigate('Home');
-  };
+    // Hardcodeando las credenciales del maestro
+    const maestroUsername = 'Maestro';
+    const maestroPassword = 'password';
+  
+    // Hardcodeando las credenciales del alumno
+    const alumnoUsername = 'Alumno';
+    const alumnoPassword = 'password';
+  
+    if (username === maestroUsername && password === maestroPassword) {
+      // Redirigir a la pantalla de inicio si las credenciales son correctas para el maestro
+      navigation.navigate('Home');
+    } else if (username === alumnoUsername && password === alumnoPassword) {
+      // Redirigir a la pantalla de inicio si las credenciales son correctas para el alumno
+      navigation.navigate('HomeAlumno');
+    } else {
+      // Mostrar mensaje de error si las credenciales no son correctas para ninguno de los casos
+      alert('Nombre de usuario o contraseña incorrectos');
+    }
+  };  
 
   const handleRegistration = () => {
-    //
     navigation.navigate('Register');
   };
 
@@ -27,11 +44,15 @@ export default function LoginScreen() {
       <TextInput
         style={styles.input}
         placeholder="Nombre de usuario"
+        value={username}
+        onChangeText={setUsername}
       />
       <TextInput
         style={styles.input}
         placeholder="Contraseña"
         secureTextEntry={true}
+        value={password}
+        onChangeText={setPassword}
       />
       <TouchableOpacity onPress={handleLogin} style={[styles.button, { backgroundColor: colors.primary }]}>
         <Text style={styles.buttonText}>Iniciar Sesión</Text>
