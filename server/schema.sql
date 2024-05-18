@@ -16,6 +16,7 @@ id INT AUTO_INCREMENT PRIMARY KEY,
 nombre VARCHAR(100) NOT NULL,
 descripcion TEXT,
 fecha DATE NOT NULL,
+hora TIME,
 codigo_salida VARCHAR(20) NOT NULL,
 id_usuario_creador INT NOT NULL,
 FOREIGN KEY (id_usuario_creador) REFERENCES Usuarios(id)

@@ -1,7 +1,10 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 
 function ObservarEventosScreen({ navigation }) {
+  const [eventos, setEventos] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   // Título de la vista
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -9,18 +12,38 @@ function ObservarEventosScreen({ navigation }) {
     });
   }, [navigation]);
 
-  // Ejemplo
-  const eventos = [
-    { id: 1, nombre: 'Evento 1', descripcion: 'Descripción del Evento 1' },
-    { id: 2, nombre: 'Evento 2', descripcion: 'Descripción del Evento 2' },
-    { id: 3, nombre: 'Evento 3', descripcion: 'Descripción del Evento 3' },
-  ];
+  useEffect(() => {
+    fetch('http://192.168.1.65:3000/eventos') // Asegúrate de usar la URL correcta para tu servidor
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json(); // Obtener el JSON de la respuesta
+      })
+      .then(data => {
+        setEventos(data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error al obtener eventos:', error);
+        Alert.alert('Error', 'Error al obtener eventos: ' + error.message);
+        setLoading(false);
+      });
+  }, []);
 
   // Evento de clic
   const handleEventoPress = (evento) => {
     // Vista a la que redirige
     navigation.navigate('DetallesEvento', { evento });
   };
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -61,6 +84,11 @@ const styles = StyleSheet.create({
   },
   eventoDescripcion: {
     fontSize: 16,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

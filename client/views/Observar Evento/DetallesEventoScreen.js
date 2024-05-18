@@ -14,51 +14,39 @@ function DetallesEventoScreen({ route, navigation }) {
 
   // Lista de integrantes
   const renderIntegrantes = (integrantes, tipo) => {
-    if (integrantes && integrantes.length > 0) {
-      return (
-        <View>
-          <Text style={styles.subtitulo}>{tipo}:</Text>
-          {integrantes.map((integrante, index) => (
-            <View key={index} style={styles.integranteItem}>
-              <Text>{integrante}</Text>
-            </View>
-          ))}
-        </View>
-      );
-    } else {
-      // Ejemplos
-      const ejemplos = tipo === 'Staff' ? ['Staff 1', 'Staff 2', 'Staff 3'] : ['Alumno 1', 'Alumno 2', 'Alumno 3'];
-
-      return (
-        <View>
-          <Text style={styles.subtitulo}>{tipo}:</Text>
-          {ejemplos.map((ejemplo, index) => (
-            <View key={index} style={styles.integranteItem}>
-              <Text>{ejemplo}</Text>
-            </View>
-          ))}
-        </View>
-      );
-    }
+    return (
+      <View>
+        <Text style={styles.subtitulo}>{tipo}:</Text>
+        {integrantes.map((integrante, index) => (
+          <View key={index} style={styles.integranteItem}>
+            <Text>{integrante}</Text>
+          </View>
+        ))}
+      </View>
+    );
   };
 
-  // Evento con clic
+  // Manejar clic en el botón de editar
   const handleEditarPress = () => {
-    // Vista a la que redirige
-    navigation.navigate('EditarEvento', { evento });
+    // Aquí puedes manejar la navegación a la pantalla de edición
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Detalles del Evento</Text>
-      <Text style={styles.eventoTitulo}>Nombre del Evento: {evento.nombre}</Text>
-      <Text style={styles.eventoDescripcion}>Descripción: {evento.descripcion}</Text>
-      <Text style={styles.eventoFecha}>Fecha: {evento.fecha}</Text>
-      <Text style={styles.eventoHora}>Hora: {evento.hora}</Text>
-      <Text style={styles.eventoCodigoSalida}>Código de Salida: {evento.codigoSalida}</Text>
+      <Text style={styles.infoTitle}>Nombre del Evento:</Text>
+      <Text style={styles.infoText}>{evento.nombre || "Nombre del evento no proporcionado"}</Text>
+      <Text style={styles.infoTitle}>Descripción:</Text>
+      <Text style={styles.infoText}>{evento.descripcion || "Descripción del evento no proporcionada"}</Text>
+      <Text style={styles.infoTitle}>Fecha:</Text>
+      <Text style={styles.infoText}>{evento.fecha || "Fecha del evento no proporcionada"}</Text>
+      <Text style={styles.infoTitle}>Hora:</Text>
+      <Text style={styles.infoText}>{evento.hora || "Hora del evento no proporcionada"}</Text>
+      <Text style={styles.infoTitle}>Código de Salida:</Text>
+      <Text style={styles.infoText}>{evento.codigoSalida || "Código de salida no proporcionado"}</Text>
       <View style={styles.divider}></View>
-      {renderIntegrantes(evento.staff, 'Staff')}
-      {renderIntegrantes(evento.alumnos, 'Alumnos')}
+      {renderIntegrantes(evento.staff || [], 'Staff')}
+      {renderIntegrantes(evento.alumnos || [], 'Alumnos')}
       <TouchableOpacity style={styles.editarButton} onPress={handleEditarPress}>
         <Text style={styles.editarButtonText}>Editar</Text>
       </TouchableOpacity>
@@ -76,24 +64,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
   },
-  eventoTitulo: {
-    fontSize: 18,
+  infoTitle: {
+    fontSize: 16,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 5,
   },
-  eventoDescripcion: {
-    fontSize: 16,
-    marginBottom: 10,
-  },
-  eventoFecha: {
-    fontSize: 16,
-    marginBottom: 10,
-  },
-  eventoHora: {
-    fontSize: 16,
-    marginBottom: 10,
-  },
-  eventoCodigoSalida: {
+  infoText: {
     fontSize: 16,
     marginBottom: 10,
   },

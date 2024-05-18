@@ -22,38 +22,38 @@ function NuevoEventoScreen({ navigation }) {
 
   const handleGuardarEvento = () => {
     const formattedFechaEvento = format(fechaEvento, 'yyyy-MM-dd');
+    const formattedHoraEvento = format(horaEvento, 'HH:mm:ss');
   
     fetch('http://192.168.1.65:3000/eventos', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      nombreEvento,
-      descripcionEvento,
-      fechaEvento: formattedFechaEvento,
-      horaEvento,
-      codigoSalida,
-    }),
-  })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Error al enviar la solicitud al servidor');
-    }
-    return response.json();
-  })
-  .then(data => {
-    console.log('Respuesta del servidor:', data);
-    Alert.alert('Evento guardado correctamente');
-  })
-  .catch(error => {
-    console.error('Error al enviar solicitud al servidor:', error);
-    Alert.alert('Error al guardar el evento');
-  });
-
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        nombreEvento,
+        descripcionEvento,
+        fechaEvento: `${formattedFechaEvento} ${formattedHoraEvento}`,
+        codigoSalida,
+        idUsuarioCreador: 1, // ID del usuario creador, actualiza este valor según sea necesario
+      }),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Error al enviar la solicitud al servidor');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Respuesta del servidor:', data);
+      Alert.alert('Evento guardado correctamente');
+      navigation.navigate('Home'); // Redirige a la pantalla de inicio después de crear el evento
+    })
+    .catch(error => {
+      console.error('Error al enviar solicitud al servidor:', error);
+      Alert.alert('Error al guardar el evento');
+    });
   };
   
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Crear Nuevo Evento</Text>
