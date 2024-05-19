@@ -18,7 +18,7 @@ function HomeAlumnoScreen({ navigation }) {
       <View style={styles.menuContainer}>
         <TouchableOpacity
           style={[styles.button, { backgroundColor: colors.primary }]}
-          onPress={() => navigateToScreen('ObservarEventos')}
+          onPress={() => navigateToScreen('ObservarEventosAlumno')}
         >
           <Text style={styles.buttonText}>Observar Eventos</Text>
         </TouchableOpacity>

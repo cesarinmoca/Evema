@@ -8,8 +8,11 @@ import ObservarEventosScreen from './views/Observar Evento/ObservarEventosScreen
 import LeerTicketsScreen from './views/Leer Tickets/LeerTicketsScreen';
 import GestionarEventosScreen from './GestionarEventosScreen';
 import DetallesEventoScreen from './views/Observar Evento/DetallesEventoScreen';
+import DetallesEventoAlumnoScreen from './views/Observar Evento/DetallesEventoAlumnoScreen';
 import DetallesTicketScreen from './views/Leer Tickets/DetallesTicketScreen';
 import HomeAlumnoScreen from './HomeAlumnoScreen';
+import ObservarEventosAlumnoScreen from './views/Observar Evento/ObservarEventosAlumnoScreen';
+
 
 const Stack = createStackNavigator();
 
@@ -27,6 +30,12 @@ function AppNavigator() {
         <Stack.Screen name="DetallesEvento" component={DetallesEventoScreen} />
         <Stack.Screen name="DetallesTicket" component={DetallesTicketScreen} />
         <Stack.Screen name="HomeAlumno" component={HomeAlumnoScreen} />
+        <Stack.Screen name="DetallesEventoAlumno" component={DetallesEventoAlumnoScreen} />
+        <Stack.Screen name="ObservarEventosAlumno" component={ObservarEventosAlumnoScreen} />
+
+
+
+
 
 
 
