@@ -160,6 +160,26 @@ app.delete('/eventos/:id', (req, res) => {
   });
 });
 
+// Endpoint para desinscribirse de un evento
+app.delete('/desinscribirse', (req, res) => {
+  const { idEvento, idAlumno } = req.body;
+  
+  // Eliminar la inscripción de la base de datos
+  const query = "DELETE FROM Inscripciones WHERE id_evento = ? AND id_alumno = ?";
+  connection.query(query, [idEvento, idAlumno], (error, results) => {
+    if (error) {
+      console.error('Error al desinscribirse del evento:', error);
+      res.status(500).json({ error: 'Error al desinscribirse del evento' });
+    } else if (results.affectedRows === 0) {
+      console.error('No se encontró ninguna inscripción correspondiente');
+      res.status(404).json({ error: 'No se encontró ninguna inscripción correspondiente' });
+    } else {
+      console.log('Desinscripción exitosa del evento');
+      res.status(200).json({ message: 'Desinscripción exitosa del evento' });
+    }
+  });
+});
+
 // Inicia el servidor en un puerto específico
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

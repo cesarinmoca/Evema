@@ -1,18 +1,16 @@
-import React, { useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 
 function DetallesEventoInscritosAlumno({ route, navigation }) {
-  // Evento parámetro 
   const { evento } = route.params;
+  const [showUnsubscribeDialog, setShowUnsubscribeDialog] = useState(false);
 
-  // Título de vista
   useEffect(() => {
     navigation.setOptions({
       title: evento.nombre,
     });
   }, [evento.nombre, navigation]);
 
-  // Lista de integrantes
   const renderIntegrantes = (integrantes, tipo) => {
     return (
       <View>
@@ -28,6 +26,57 @@ function DetallesEventoInscritosAlumno({ route, navigation }) {
         )}
       </View>
     );
+  };
+
+  const handleUnsubscribePress = () => {
+    Alert.alert(
+      "¿Seguro que deseas salir de este evento?",
+      "",
+      [
+        {
+          text: "Sí",
+          onPress: () => {
+            setShowUnsubscribeDialog(true);
+          },
+        },
+        {
+          text: "No",
+          style: "cancel",
+        },
+      ]
+    );
+  };
+
+  const handleConfirmUnsubscribe = async () => {
+    try {
+      // Realiza una solicitud al servidor para desinscribirse del evento
+      const desinscripcionResponse = await fetch('http://localhost:3000/desinscribirse', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          idEvento: evento.id,
+          idAlumno: 3 // Reemplaza con el ID del alumno actual
+        })
+      });
+
+      if (!desinscripcionResponse.ok) {
+        throw new Error('Error al salir del evento');
+      }
+
+      const data = await desinscripcionResponse.json();
+      alert(data.message); // Muestra un mensaje de éxito
+      // Redirige al Home
+      navigation.navigate('HomeAlumno');
+    } catch (error) {
+      console.error('Error al salir del evento:', error);
+      alert('Error al salir del evento');
+    }
+  };
+
+  const handleCancelUnsubscribe = () => {
+    setShowUnsubscribeDialog(false);
   };
 
   return (
@@ -46,9 +95,31 @@ function DetallesEventoInscritosAlumno({ route, navigation }) {
       <View style={styles.divider}></View>
       {renderIntegrantes(evento.staff || [], 'Staff')}
       {renderIntegrantes(evento.alumnos || [], 'Alumnos')}
+      
+      <TouchableOpacity style={styles.unsubscribeButton} onPress={handleUnsubscribePress}>
+        <Text style={styles.unsubscribeButtonText}>Salir del Evento</Text>
+      </TouchableOpacity>
+
+      {/* ConfirmUnsubscribeDialog */}
+      {showUnsubscribeDialog && (
+        <View style={styles.overlay}>
+          <View style={styles.dialog}>
+            <Text style={styles.title}>¿Seguro que deseas salir de este evento?</Text>
+            <View style={styles.buttonsContainer}>
+              <TouchableOpacity style={styles.button} onPress={handleCancelUnsubscribe}>
+                <Text style={styles.buttonText}>NO</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.button, styles.unsubscribeButton]} onPress={handleConfirmUnsubscribe}>
+                <Text style={styles.buttonText}>SI</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      )}
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -81,6 +152,48 @@ const styles = StyleSheet.create({
     borderBottomColor: 'black',
     borderBottomWidth: 1,
     marginBottom: 10,
+  },
+  unsubscribeButton: {
+    backgroundColor: 'red',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 20,
+    width: '60%',
+    alignSelf: 'center',
+  },
+  unsubscribeButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#fff',
+  },
+  overlay: {
+    ...StyleSheet.absoluteFill,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  dialog: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
+  },
+  button: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginHorizontal: 10,
+    borderWidth: 1,
+    borderColor: '#aaa',
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#fff',
   },
 });
 
