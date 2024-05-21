@@ -34,12 +34,6 @@ function HomeScreen({ navigation }) {
         >
           <Text style={styles.buttonText}>Leer Tickets</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.button, { backgroundColor: colors.primary }]}
-          onPress={() => navigateToScreen('GestionarEventos')}
-        >
-          <Text style={styles.buttonText}>Gestionar Eventos</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
