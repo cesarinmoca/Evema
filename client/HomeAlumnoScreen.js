@@ -24,7 +24,7 @@ function HomeAlumnoScreen({ navigation }) {
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.button, { backgroundColor: colors.primary }]}
-          onPress={() => navigateToScreen('ObservarEventos')}
+          onPress={() => navigateToScreen('TusEventosAlumno')}
         >
           <Text style={styles.buttonText}>Tus Eventos</Text>
         </TouchableOpacity>

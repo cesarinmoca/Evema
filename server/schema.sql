@@ -22,6 +22,15 @@ id_usuario_creador INT NOT NULL,
 FOREIGN KEY (id_usuario_creador) REFERENCES Usuarios(id)
 );
 
+--Tabla de Inscripciones:
+CREATE TABLE Inscripciones (
+id INT AUTO_INCREMENT PRIMARY KEY,
+id_evento INT NOT NULL,
+id_alumno INT NOT NULL,
+FOREIGN KEY (id_evento) REFERENCES Eventos(id),
+FOREIGN KEY (id_alumno) REFERENCES Usuarios(id)
+);
+
 --Tabla de Postulaciones:
 CREATE TABLE Postulaciones (
 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -61,3 +70,7 @@ nombre_rol VARCHAR(50) NOT NULL
 
 --Maestro:
 INSERT INTO Usuarios (nombre_usuario, contrasena, rol) VALUES ('Maestro', 'password', 'Gestor');
+
+--Alumno:
+INSERT INTO Usuarios (nombre_usuario, contrasena, rol) VALUES ('Alumno', 'password', 'Usuario');
+

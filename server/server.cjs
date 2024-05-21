@@ -34,6 +34,8 @@ app.get('/', (req, res) => {
   res.send('¡Hola desde el servidor!');
 });
 
+
+
 // Endpoint para crear eventos
 app.post('/eventos', (req, res) => {
   const { nombreEvento, descripcionEvento, fechaEvento, codigoSalida } = req.body;
@@ -87,6 +89,54 @@ app.put('/eventos/:id', (req, res) => {
     } else {
       console.log('Evento actualizado correctamente en la base de datos');
       res.status(200).json({ message: 'Evento actualizado correctamente' });
+    }
+  });
+});
+
+// Endpoint para inscribirse en un evento
+app.post('/inscribirse', (req, res) => {
+  const { idEvento, idAlumno } = req.body;
+  
+  // Verificar si el usuario es un alumno
+  const query = "SELECT rol FROM Usuarios WHERE id = ?";
+  connection.query(query, [idAlumno], (error, results) => {
+    if (error) {
+      console.error('Error al obtener el rol del usuario:', error);
+      res.status(500).json({ error: 'Error al inscribirse en el evento' });
+    } else {
+      const rol = results[0].rol;
+      if (rol !== 'Usuario') {
+        res.status(403).json({ error: 'Solo los alumnos pueden inscribirse en eventos' });
+      } else {
+        // Insertar la inscripción en la base de datos
+        const inscripcionQuery = "INSERT INTO Inscripciones (id_evento, id_alumno) VALUES (?, ?)";
+        connection.query(inscripcionQuery, [idEvento, idAlumno], (inscripcionError, inscripcionResults) => {
+          if (inscripcionError) {
+            console.error('Error al inscribirse en el evento:', inscripcionError);
+            res.status(500).json({ error: 'Error al inscribirse en el evento' });
+          } else {
+            console.log('Inscripción exitosa en el evento');
+            res.status(200).json({ message: 'Inscripción exitosa en el evento' });
+          }
+        });
+      }
+    }
+  });
+});
+
+
+// Endpoint para obtener eventos inscritos de un alumno
+app.get('/tus-eventos/:idAlumno', (req, res) => {
+  const { idAlumno } = req.params;
+  
+  const query = "SELECT * FROM Eventos WHERE id IN (SELECT id_evento FROM Inscripciones WHERE id_alumno = ?)";
+  connection.query(query, [idAlumno], (error, results) => {
+    if (error) {
+      console.error('Error al obtener eventos inscritos del alumno:', error);
+      res.status(500).json({ error: 'Error al obtener eventos inscritos del alumno' });
+    } else {
+      console.log('Eventos inscritos obtenidos correctamente del alumno:', results);
+      res.status(200).json(results);
     }
   });
 });

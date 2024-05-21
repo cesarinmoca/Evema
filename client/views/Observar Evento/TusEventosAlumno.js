@@ -1,19 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Alert, ScrollView } from 'react-native';
 
-function ObservarEventosAlumnoScreen({ navigation }) {
+function TusEventosAlumno({ navigation }) {
   const [eventos, setEventos] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // Título de la vista
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      title: 'Observar Eventos',
-    });
-  }, [navigation]);
+  const idAlumno = 3; // ID hardcodeado del alumno
 
   useEffect(() => {
-    fetch('http://localhost:3000/eventos') // Asegúrate de usar la URL correcta para tu servidor
+    fetch(`http://localhost:3000/tus-eventos/${idAlumno}`) // Cambia la URL según sea necesario
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -33,8 +27,7 @@ function ObservarEventosAlumnoScreen({ navigation }) {
 
   // Evento de clic
   const handleEventoPress = (evento) => {
-    // Vista a la que redirige
-    navigation.navigate('DetallesEventoAlumno', { evento });
+    navigation.navigate('DetallesEvento', { evento });
   };
 
   if (loading) {
@@ -46,17 +39,19 @@ function ObservarEventosAlumnoScreen({ navigation }) {
   }
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>Lista de Eventos:</Text>
-      {eventos.map((evento) => (
-        <TouchableOpacity key={evento.id} onPress={() => handleEventoPress(evento)}>
-          <View style={styles.eventoContainer}>
-            <Text style={styles.eventoNombre}>{evento.nombre}</Text>
-            <Text style={styles.eventoDescripcion}>{evento.descripcion}</Text>
-          </View>
-        </TouchableOpacity>
-      ))}
-    </ScrollView>
+    <View style={styles.container}>
+      <Text style={styles.title}>Tus Eventos Inscritos:</Text>
+      <ScrollView>
+        {eventos.map((evento) => (
+          <TouchableOpacity key={evento.id} onPress={() => handleEventoPress(evento)}>
+            <View style={styles.eventoContainer}>
+              <Text style={styles.eventoNombre}>{evento.nombre}</Text>
+              <Text style={styles.eventoDescripcion}>{evento.descripcion}</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+    </View>
   );
 }
 
@@ -92,4 +87,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ObservarEventosAlumnoScreen;
+export default TusEventosAlumno;

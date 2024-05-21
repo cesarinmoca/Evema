@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 
 function DetallesEventoAlumnoScreen({ route, navigation }) {
   // Evento parámetro 
@@ -26,6 +26,53 @@ function DetallesEventoAlumnoScreen({ route, navigation }) {
     );
   };
 
+  // Manejar clic en el botón de inscribirse
+  const handleInscribirsePress = async () => {
+    Alert.alert(
+      "¿Deseas inscribirte al evento?",
+      "",
+      [
+        {
+          text: "Sí",
+          onPress: async () => {
+            try {
+              // Asignar directamente el ID del alumno (en este caso, 3)
+              const idAlumno = 3;
+
+              // Envía una solicitud al servidor para inscribirse en el evento
+              const inscripcionResponse = await fetch('http://localhost:3000/inscribirse', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  idEvento: evento.id,
+                  idAlumno: idAlumno
+                })
+              });
+
+              if (!inscripcionResponse.ok) {
+                throw new Error('Error al inscribirse en el evento');
+              }
+
+              const data = await inscripcionResponse.json();
+              alert(data.message); // Muestra un mensaje de éxito
+              // Redirigir al HOME
+              navigation.navigate('HomeAlumno');
+            } catch (error) {
+              console.error('Error al inscribirse en el evento:', error);
+              alert('Error al inscribirse en el evento');
+            }
+          },
+        },
+        {
+          text: "No",
+          style: "cancel",
+        },
+      ]
+    );
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Detalles del Evento</Text>
@@ -42,6 +89,9 @@ function DetallesEventoAlumnoScreen({ route, navigation }) {
       <View style={styles.divider}></View>
       {renderIntegrantes(evento.staff || [], 'Staff')}
       {renderIntegrantes(evento.alumnos || [], 'Alumnos')}
+      <TouchableOpacity style={styles.inscribirseButton} onPress={handleInscribirsePress}>
+        <Text style={styles.inscribirseButtonText}>Inscribirse al Evento</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -77,6 +127,20 @@ const styles = StyleSheet.create({
     borderBottomColor: 'black',
     borderBottomWidth: 1,
     marginBottom: 10,
+  },
+  inscribirseButton: {
+    backgroundColor: '#6369a8',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 20,
+    width: '60%',
+    alignSelf: 'center',
+  },
+  inscribirseButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#fff',
   },
 });
 
