@@ -14,6 +14,7 @@ import HomeAlumnoScreen from './HomeAlumnoScreen';
 import ObservarEventosAlumnoScreen from './views/Observar Evento/ObservarEventosAlumnoScreen';
 import EditarEventoScreen from './views/Observar Evento/EditarEventoScreen';
 import TusEventosAlumno from './views/Observar Evento/TusEventosAlumno';
+import DetallesEventoInscritosAlumno from './views/Observar Evento/DetallesEventoInscritosAlumno';
 
 const Stack = createStackNavigator();
 
@@ -35,6 +36,8 @@ function AppNavigator() {
         <Stack.Screen name="ObservarEventosAlumno" component={ObservarEventosAlumnoScreen} />
         <Stack.Screen name="EditarEvento" component={EditarEventoScreen} />
         <Stack.Screen name="TusEventosAlumno" component={TusEventosAlumno} />
+        <Stack.Screen name="DetallesEventoInscritosAlumno" component={DetallesEventoInscritosAlumno} />
+
 
         
       </Stack.Navigator>

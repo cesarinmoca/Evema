@@ -22,14 +22,15 @@ id_usuario_creador INT NOT NULL,
 FOREIGN KEY (id_usuario_creador) REFERENCES Usuarios(id)
 );
 
---Tabla de Inscripciones:
+-- Tabla de Inscripciones:
 CREATE TABLE Inscripciones (
 id INT AUTO_INCREMENT PRIMARY KEY,
 id_evento INT NOT NULL,
 id_alumno INT NOT NULL,
-FOREIGN KEY (id_evento) REFERENCES Eventos(id),
+FOREIGN KEY (id_evento) REFERENCES Eventos(id) ON DELETE CASCADE,
 FOREIGN KEY (id_alumno) REFERENCES Usuarios(id)
 );
+
 
 --Tabla de Postulaciones:
 CREATE TABLE Postulaciones (

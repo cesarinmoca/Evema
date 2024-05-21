@@ -27,7 +27,7 @@ function TusEventosAlumno({ navigation }) {
 
   // Evento de clic
   const handleEventoPress = (evento) => {
-    navigation.navigate('DetallesEvento', { evento });
+    navigation.navigate('DetallesEventoInscritosAlumno', { evento });
   };
 
   if (loading) {

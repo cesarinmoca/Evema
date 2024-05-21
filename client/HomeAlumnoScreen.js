@@ -14,7 +14,7 @@ function HomeAlumnoScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.welcomeText}>¡Bienvenido a la pantalla de inicio!</Text>
+      <Text style={styles.welcomeText}>¡Bienvenido Alumno!</Text>
       <View style={styles.menuContainer}>
         <TouchableOpacity
           style={[styles.button, { backgroundColor: colors.primary }]}
