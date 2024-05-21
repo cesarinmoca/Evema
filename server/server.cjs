@@ -15,8 +15,8 @@ app.use(cors());
 // Configura la conexión a la base de datos MySQL
 const connection = mysql.createConnection({
   host: 'localhost', // Cambia a tu host de MySQL
-  user: 'root',
-  password: '', // Deja la contraseña en blanco
+  user: 'root2',
+  password: 'C0MUN25xz!', // Deja la contraseña en blanco
   database: 'EVEMA'
 });
 
@@ -64,6 +64,23 @@ app.get('/eventos', (req, res) => {
     } else {
       console.log('Eventos obtenidos correctamente:', results);
       res.status(200).json(results);
+    }
+  });
+});
+
+// Endpoint para crear usuarios
+app.post('/usuarios', (req, res) => {
+  const { nombreUsuario, contrasena } = req.body;
+  const rol = 'Usuario'; // Rol por defecto
+
+  const query = "INSERT INTO Usuarios (nombre_usuario, contrasena, rol) VALUES (?, ?, ?)";
+  connection.query(query, [nombreUsuario, contrasena, rol], (error, results) => {
+    if (error) {
+      console.error('Error al insertar usuario en la base de datos:', error);
+      res.status(500).json({ error: 'Error al insertar usuario en la base de datos' });
+    } else {
+      console.log('Usuario insertado correctamente en la base de datos');
+      res.status(201).json({ message: 'Usuario insertado correctamente' });
     }
   });
 });

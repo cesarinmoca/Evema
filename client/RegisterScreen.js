@@ -1,66 +1,62 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
-import { Camera } from 'expo-camera';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions, Alert } from 'react-native';
 
 const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 
-const RegisterScreen = () => {
-  const [hasPermission, setHasPermission] = useState(null);
-  const [cameraRef, setCameraRef] = useState(null);
+function RegisterScreen({ navigation }) {
+  const [nombreUsuario, setNombreUsuario] = useState('');
+  const [contrasena, setContrasena] = useState('');
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === 'granted');
-    })();
-  }, []);
-
-  const handleCapture = async () => {
-    if (cameraRef) {
-      try {
-        let photo = await cameraRef.takePictureAsync();
-        console.log('Foto tomada:', photo);
-        // Aquí podrías enviar la foto a tu servidor o realizar alguna acción adicional
-      } catch (error) {
-        console.error('Error al capturar la foto:', error);
-        // Muestra un mensaje de error al usuario
+  function handleRegister() {
+    fetch('http://10.213.1.156:3000/usuarios', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        nombreUsuario,
+        contrasena,
+        rol: 'Usuario', // Rol por defecto
+      }),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Error al enviar la solicitud al servidor');
       }
-    }
-  };
-
-  if (hasPermission === null) {
-    return <View />;
-  }
-  if (hasPermission === false) {
-    return <Text>Por favor, concede permisos para acceder a la cámara</Text>;
+      return response.json();
+    })
+    .then(data => {
+      console.log('Respuesta del servidor:', data);
+      Alert.alert('Éxito', 'Usuario registrado correctamente');
+    })
+    .catch(error => {
+      console.error('Error al registrar usuario:', error);
+      Alert.alert('Error', 'Hubo un problema al registrar el usuario');
+    });
   }
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Registrarse</Text>
-      <Camera
-        style={styles.camera}
-        type={Camera.Constants.Type.back}
-        ref={ref => setCameraRef(ref)}
-      >
-        <View style={styles.overlay}>
-          <View style={styles.rectangleContainer}>
-            <View style={styles.rectangle} />
-          </View>
-        </View>
-      </Camera>
-      <TouchableOpacity style={styles.captureButton} onPress={handleCapture}>
-        <Text style={styles.buttonText}>Capturar</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Nombre de usuario"
+        value={nombreUsuario}
+        onChangeText={setNombreUsuario}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Contraseña"
+        secureTextEntry
+        value={contrasena}
+        onChangeText={setContrasena}
+      />
+      <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
+        <Text style={styles.buttonText}>Registrarse</Text>
       </TouchableOpacity>
     </View>
   );
 }
-
-const overlayColor = 'rgba(0,0,0,0.5)';
-const borderColor = '#fff';
-const borderWidth = 2;
-const rectangleSize = 200;
 
 const styles = StyleSheet.create({
   container: {
@@ -75,32 +71,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
   },
-  camera: {
+  input: {
     width: windowWidth - 40,
-    height: 400,
+    height: 40,
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    paddingHorizontal: 10,
     marginBottom: 20,
   },
-  overlay: {
-    flex: 1,
-    backgroundColor: overlayColor,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  rectangleContainer: {
-    width: rectangleSize,
-    height: rectangleSize,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: borderWidth,
-    borderColor: borderColor,
-  },
-  rectangle: {
-    width: rectangleSize - borderWidth * 2,
-    height: rectangleSize - borderWidth * 2,
-    borderWidth: borderWidth,
-    borderColor: borderColor,
-  },
-  captureButton: {
+  registerButton: {
     width: '100%',
     height: 40,
     backgroundColor: '#6369a8',
