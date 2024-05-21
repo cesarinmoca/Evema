@@ -8,7 +8,7 @@ function RegisterScreen({ navigation }) {
   const [contrasena, setContrasena] = useState('');
 
   function handleRegister() {
-    fetch('http://192.168.1.65:3000/usuarios', {
+    fetch('http://172.16.100.231:3000/usuarios', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

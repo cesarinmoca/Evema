@@ -50,7 +50,7 @@ function DetallesEventoInscritosAlumno({ route, navigation }) {
   const handleConfirmUnsubscribe = async () => {
     try {
       // Realiza una solicitud al servidor para desinscribirse del evento
-      const desinscripcionResponse = await fetch('http://192.168.1.65:3000/desinscribirse', {
+      const desinscripcionResponse = await fetch('http://172.16.100.231:3000/desinscribirse', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'

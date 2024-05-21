@@ -44,7 +44,7 @@ function EditarEventoScreen({ route, navigation }) {
 
     console.log(`Actualizando evento con ID: ${evento.id}`);
 
-    fetch(`http://192.168.1.65:3000/eventos/${evento.id}`, {
+    fetch(`http://172.16.100.231:3000/eventos/${evento.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
