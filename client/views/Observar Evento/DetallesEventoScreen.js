@@ -28,7 +28,7 @@ function DetallesEventoScreen({ route, navigation }) {
 
   // Manejar clic en el botón de editar
   const handleEditarPress = () => {
-    // Aquí puedes manejar la navegación a la pantalla de edición
+    navigation.navigate('EditarEvento', { evento });
   };
 
   return (

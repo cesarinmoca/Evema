@@ -52,6 +52,8 @@ app.post('/eventos', (req, res) => {
   });
 });
 
+
+
 // Endpoint para obtener todos los eventos
 app.get('/eventos', (req, res) => {
   const query = "SELECT * FROM Eventos";
@@ -66,6 +68,28 @@ app.get('/eventos', (req, res) => {
   });
 });
 
+// Endpoint para actualizar un evento
+app.put('/eventos/:id', (req, res) => {
+  const { id } = req.params;
+  const { nombre, descripcion, fecha, hora, codigo_salida } = req.body;
+
+  // Establece una hora por defecto si la hora es null
+  const horaDB = hora !== null ? hora : '12:00:00';
+
+  const query = "UPDATE Eventos SET nombre = ?, descripcion = ?, fecha = ?, hora = ?, codigo_salida = ? WHERE id = ?";
+  connection.query(query, [nombre, descripcion, fecha, horaDB, codigo_salida, id], (error, results) => {
+    if (error) {
+      console.error('Error al actualizar evento en la base de datos:', error);
+      res.status(500).json({ error: 'Error al actualizar evento en la base de datos' });
+    } else if (results.affectedRows === 0) {
+      console.error('El evento con el ID proporcionado no fue encontrado');
+      res.status(404).json({ error: 'Evento no encontrado' });
+    } else {
+      console.log('Evento actualizado correctamente en la base de datos');
+      res.status(200).json({ message: 'Evento actualizado correctamente' });
+    }
+  });
+});
 
 // Inicia el servidor en un puerto específico
 const PORT = process.env.PORT || 3000;

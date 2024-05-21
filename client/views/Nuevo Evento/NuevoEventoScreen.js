@@ -8,23 +8,22 @@ function NuevoEventoScreen({ navigation }) {
   const [nombreEvento, setNombreEvento] = useState('');
   const [descripcionEvento, setDescripcionEvento] = useState('');
   const [fechaEvento, setFechaEvento] = useState(new Date());
-  const [horaEvento, setHoraEvento] = useState(new Date());
+  const [horaEvento, setHoraEvento] = useState('');
   const [codigoSalida, setCodigoSalida] = useState('');
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [showTimePicker, setShowTimePicker] = useState(false);
 
   // Título de vista
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: 'Evento',
+      title: 'Crear Nuevo Evento',
     });
   }, [navigation]);
 
   const handleGuardarEvento = () => {
     const formattedFechaEvento = format(fechaEvento, 'yyyy-MM-dd');
-    const formattedHoraEvento = format(horaEvento, 'HH:mm:ss');
+    const formattedHoraEvento = horaEvento;
   
-    fetch('http://192.168.1.65:3000/eventos', {
+    fetch('http://localhost/eventos', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -89,20 +88,11 @@ function NuevoEventoScreen({ navigation }) {
         }}
         onCancel={() => setShowDatePicker(false)}
       />
-      <View style={styles.buttonContainer}>
-        <Button title="Seleccionar Hora" onPress={() => setShowTimePicker(true)} />
-        <Text style={styles.dateTimeText}>
-          {horaEvento.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-        </Text>
-      </View>
-      <DateTimePickerModal
-        isVisible={showTimePicker}
-        mode="time"
-        onConfirm={(time) => {
-          setShowTimePicker(false);
-          setHoraEvento(time);
-        }}
-        onCancel={() => setShowTimePicker(false)}
+      <TextInput
+        style={[styles.input, styles.textInput]}
+        placeholder="14:00:00"
+        value={horaEvento}
+        onChangeText={setHoraEvento}
       />
       <Button title="Guardar Evento" onPress={handleGuardarEvento} />
     </View>
@@ -131,6 +121,9 @@ const styles = StyleSheet.create({
   },
   textArea: {
     height: 100,
+  },
+  textInput: {
+    height: 40,
   },
   buttonContainer: {
     flexDirection: 'row',

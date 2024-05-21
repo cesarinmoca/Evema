@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Alert, ScrollView } from 'react-native';
 
 function ObservarEventosScreen({ navigation }) {
   const [eventos, setEventos] = useState([]);
@@ -13,7 +13,7 @@ function ObservarEventosScreen({ navigation }) {
   }, [navigation]);
 
   useEffect(() => {
-    fetch('http://192.168.1.65:3000/eventos') // Asegúrate de usar la URL correcta para tu servidor
+    fetch('http://localhost/eventos') // Asegúrate de usar la URL correcta para tu servidor
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -48,14 +48,16 @@ function ObservarEventosScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Lista de Eventos:</Text>
-      {eventos.map((evento) => (
-        <TouchableOpacity key={evento.id} onPress={() => handleEventoPress(evento)}>
-          <View style={styles.eventoContainer}>
-            <Text style={styles.eventoNombre}>{evento.nombre}</Text>
-            <Text style={styles.eventoDescripcion}>{evento.descripcion}</Text>
-          </View>
-        </TouchableOpacity>
-      ))}
+      <ScrollView>
+        {eventos.map((evento) => (
+          <TouchableOpacity key={evento.id} onPress={() => handleEventoPress(evento)}>
+            <View style={styles.eventoContainer}>
+              <Text style={styles.eventoNombre}>{evento.nombre}</Text>
+              <Text style={styles.eventoDescripcion}>{evento.descripcion}</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
     </View>
   );
 }
