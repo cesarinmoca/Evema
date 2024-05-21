@@ -1,18 +1,16 @@
-import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 
 function DetallesEventoScreen({ route, navigation }) {
-  // Evento parámetro 
   const { evento } = route.params;
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
-  // Título de vista
   useEffect(() => {
     navigation.setOptions({
       title: evento.nombre,
     });
   }, [evento.nombre, navigation]);
 
-  // Lista de integrantes
   const renderIntegrantes = (integrantes, tipo) => {
     return (
       <View>
@@ -26,9 +24,44 @@ function DetallesEventoScreen({ route, navigation }) {
     );
   };
 
-  // Manejar clic en el botón de editar
   const handleEditarPress = () => {
     navigation.navigate('EditarEvento', { evento });
+  };
+
+  const handleEliminarPress = () => {
+    setShowDeleteDialog(true);
+  };
+
+  const handleConfirmDelete = () => {
+    // Realizar la solicitud HTTP al servidor para eliminar el evento
+    fetch(`http://localhost:3000/eventos/${evento.id}`, {
+      method: 'DELETE',
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Error al eliminar el evento');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        Alert.alert('Evento eliminado', 'El evento ha sido eliminado correctamente', [
+          {
+            text: 'OK',
+            onPress: () => {
+              setShowDeleteDialog(false);
+              navigation.navigate('Home'); // Redirigir al HomeScreen después de eliminar
+            },
+          },
+        ]);
+      })
+      .catch((error) => {
+        console.error('Error al eliminar el evento:', error);
+        Alert.alert('Error', 'Se produjo un error al eliminar el evento. Por favor, intenta nuevamente.');
+      });
+  };
+
+  const handleCancelDelete = () => {
+    setShowDeleteDialog(false);
   };
 
   return (
@@ -50,6 +83,26 @@ function DetallesEventoScreen({ route, navigation }) {
       <TouchableOpacity style={styles.editarButton} onPress={handleEditarPress}>
         <Text style={styles.editarButtonText}>Editar</Text>
       </TouchableOpacity>
+      <TouchableOpacity style={styles.eliminarButton} onPress={handleEliminarPress}>
+        <Text style={styles.eliminarButtonText}>Eliminar evento</Text>
+      </TouchableOpacity>
+
+      {/* ConfirmDeleteDialog */}
+      {showDeleteDialog && (
+        <View style={styles.overlay}>
+          <View style={styles.dialog}>
+            <Text style={styles.title}>¿Seguro que deseas eliminar este evento?</Text>
+            <View style={styles.buttonsContainer}>
+              <TouchableOpacity style={styles.button} onPress={handleCancelDelete}>
+                <Text style={styles.buttonText}>NO</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.button, styles.deleteButton]} onPress={handleConfirmDelete}>
+                <Text style={styles.buttonText}>SI</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      )}
     </View>
   );
 }
@@ -98,6 +151,52 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
+    color: '#fff',
+  },
+  eliminarButton: {
+    backgroundColor: 'red',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+    width: '60%',
+    alignSelf: 'center',
+  },
+  eliminarButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#fff',
+  },
+  overlay: {
+    ...StyleSheet.absoluteFill,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  dialog: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
+  },
+  button: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginHorizontal: 10,
+    borderWidth: 1,
+    borderColor: '#aaa',
+  },
+  deleteButton: {
+    backgroundColor: 'red',
+    borderColor: 'red',
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
     color: '#fff',
   },
 });

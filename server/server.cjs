@@ -141,6 +141,25 @@ app.get('/tus-eventos/:idAlumno', (req, res) => {
   });
 });
 
+// Definimos el endpoint para eliminar eventos
+app.delete('/eventos/:id', (req, res) => {
+  const { id } = req.params;
+
+  const query = "DELETE FROM Eventos WHERE id = ?";
+  connection.query(query, [id], (error, results) => {
+    if (error) {
+      console.error('Error al eliminar evento en la base de datos:', error);
+      res.status(500).json({ error: 'Error al eliminar evento en la base de datos' });
+    } else if (results.affectedRows === 0) {
+      console.error('El evento con el ID proporcionado no fue encontrado');
+      res.status(404).json({ error: 'Evento no encontrado' });
+    } else {
+      console.log('Evento eliminado correctamente de la base de datos');
+      res.status(200).json({ message: 'Evento eliminado correctamente' });
+    }
+  });
+});
+
 // Inicia el servidor en un puerto específico
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
