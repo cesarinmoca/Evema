@@ -180,6 +180,23 @@ app.delete('/desinscribirse', (req, res) => {
   });
 });
 
+// Endpoint para crear usuarios
+app.post('/usuarios', (req, res) => {
+  const { nombreUsuario, contrasena } = req.body;
+  const rol = 'Usuario'; // Rol por defecto
+
+  const query = "INSERT INTO Usuarios (nombre_usuario, contrasena, rol) VALUES (?, ?, ?)";
+  connection.query(query, [nombreUsuario, contrasena, rol], (error, results) => {
+    if (error) {
+      console.error('Error al insertar usuario en la base de datos:', error);
+      res.status(500).json({ error: 'Error al insertar usuario en la base de datos' });
+    } else {
+      console.log('Usuario insertado correctamente en la base de datos');
+      res.status(201).json({ message: 'Usuario insertado correctamente' });
+    }
+  });
+});
+
 // Inicia el servidor en un puerto específico
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
