@@ -18,8 +18,14 @@ const RegisterScreen = () => {
 
   const handleCapture = async () => {
     if (cameraRef) {
-      let photo = await cameraRef.takePictureAsync();
-      console.log('Foto tomada:', photo);
+      try {
+        let photo = await cameraRef.takePictureAsync();
+        console.log('Foto tomada:', photo);
+        // Aquí podrías enviar la foto a tu servidor o realizar alguna acción adicional
+      } catch (error) {
+        console.error('Error al capturar la foto:', error);
+        // Muestra un mensaje de error al usuario
+      }
     }
   };
 

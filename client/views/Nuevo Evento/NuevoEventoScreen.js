@@ -23,7 +23,7 @@ function NuevoEventoScreen({ navigation }) {
     const formattedFechaEvento = format(fechaEvento, 'yyyy-MM-dd');
     const formattedHoraEvento = horaEvento;
   
-    fetch('http://localhost/eventos', {
+    fetch('http://localhost:3000/eventos', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

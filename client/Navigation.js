@@ -33,15 +33,7 @@ function AppNavigator() {
         <Stack.Screen name="DetallesEventoAlumno" component={DetallesEventoAlumnoScreen} />
         <Stack.Screen name="ObservarEventosAlumno" component={ObservarEventosAlumnoScreen} />
         <Stack.Screen name="EditarEvento" component={EditarEventoScreen} />
-
-
-
-
-
-
-
-
-
+        
       </Stack.Navigator>
     </NavigationContainer>
   );
