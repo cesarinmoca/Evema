@@ -13,7 +13,7 @@ function ObservarEventosAlumnoScreen({ navigation }) {
   }, [navigation]);
 
   useEffect(() => {
-    fetch('http://localhost:3000/eventos') // Asegúrate de usar la URL correcta para tu servidor
+    fetch('http://192.168.1.65:3000/eventos') // Asegúrate de usar la URL correcta para tu servidor
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);

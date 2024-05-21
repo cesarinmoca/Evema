@@ -1,5 +1,5 @@
 import React, { useState, useLayoutEffect } from 'react';
-import { View, Text, StyleSheet, Button, Alert } from 'react-native';
+import { View, Text, StyleSheet, Button, Alert, ScrollView } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { format } from 'date-fns';
@@ -22,8 +22,8 @@ function NuevoEventoScreen({ navigation }) {
   const handleGuardarEvento = () => {
     const formattedFechaEvento = format(fechaEvento, 'yyyy-MM-dd');
     const formattedHoraEvento = horaEvento;
-  
-    fetch('http://localhost:3000/eventos', {
+
+    fetch('http://192.168.1.65:3000/eventos', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -52,64 +52,70 @@ function NuevoEventoScreen({ navigation }) {
       Alert.alert('Error al guardar el evento');
     });
   };
-  
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Crear Nuevo Evento</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Nombre del evento"
-        value={nombreEvento}
-        onChangeText={setNombreEvento}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Código de Asistencia"
-        value={codigoSalida}
-        onChangeText={setCodigoSalida}
-      />
-      <TextInput
-        style={[styles.input, styles.textArea]}
-        placeholder="Descripción del evento"
-        value={descripcionEvento}
-        onChangeText={setDescripcionEvento}
-        multiline
-      />
-      <View style={styles.buttonContainer}>
-        <Button title="Seleccionar Fecha" onPress={() => setShowDatePicker(true)} />
-        <Text style={styles.dateTimeText}>{fechaEvento.toDateString()}</Text>
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Crear Nuevo Evento</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Nombre del evento"
+          value={nombreEvento}
+          onChangeText={setNombreEvento}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Código de Asistencia"
+          value={codigoSalida}
+          onChangeText={setCodigoSalida}
+        />
+        <TextInput
+          style={[styles.input, styles.textArea]}
+          placeholder="Descripción del evento"
+          value={descripcionEvento}
+          onChangeText={setDescripcionEvento}
+          multiline
+        />
+        <View style={styles.buttonContainer}>
+          <Button title="Seleccionar Fecha" onPress={() => setShowDatePicker(true)} />
+          <Text style={styles.dateTimeText}>{fechaEvento.toDateString()}</Text>
+        </View>
+        <DateTimePickerModal
+          isVisible={showDatePicker}
+          mode="date"
+          onConfirm={(date) => {
+            setShowDatePicker(false);
+            setFechaEvento(date);
+          }}
+          onCancel={() => setShowDatePicker(false)}
+        />
+        <TextInput
+          style={[styles.input, styles.textInput]}
+          placeholder="14:00:00"
+          value={horaEvento}
+          onChangeText={setHoraEvento}
+        />
+        <Button title="Guardar Evento" onPress={handleGuardarEvento} />
       </View>
-      <DateTimePickerModal
-        isVisible={showDatePicker}
-        mode="date"
-        onConfirm={(date) => {
-          setShowDatePicker(false);
-          setFechaEvento(date);
-        }}
-        onCancel={() => setShowDatePicker(false)}
-      />
-      <TextInput
-        style={[styles.input, styles.textInput]}
-        placeholder="14:00:00"
-        value={horaEvento}
-        onChangeText={setHoraEvento}
-      />
-      <Button title="Guardar Evento" onPress={handleGuardarEvento} />
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  scrollContainer: {
+    flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+  },
+  container: {
+    width: '100%',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
+    textAlign: 'center',
   },
   input: {
     borderWidth: 1,

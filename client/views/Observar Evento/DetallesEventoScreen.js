@@ -34,7 +34,7 @@ function DetallesEventoScreen({ route, navigation }) {
 
   const handleConfirmDelete = () => {
     // Realizar la solicitud HTTP al servidor para eliminar el evento
-    fetch(`http://localhost:3000/eventos/${evento.id}`, {
+    fetch(`http://192.168.1.65:3000/eventos/${evento.id}`, {
       method: 'DELETE',
     })
       .then((response) => {

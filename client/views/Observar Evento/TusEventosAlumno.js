@@ -7,7 +7,7 @@ function TusEventosAlumno({ navigation }) {
   const idAlumno = 3; // ID hardcodeado del alumno
 
   useEffect(() => {
-    fetch(`http://localhost:3000/tus-eventos/${idAlumno}`) // Cambia la URL según sea necesario
+    fetch(`http://192.168.1.65:3000/tus-eventos/${idAlumno}`) // Cambia la URL según sea necesario
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);

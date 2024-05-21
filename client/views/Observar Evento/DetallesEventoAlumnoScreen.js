@@ -40,7 +40,7 @@ function DetallesEventoAlumnoScreen({ route, navigation }) {
               const idAlumno = 3;
 
               // Envía una solicitud al servidor para inscribirse en el evento
-              const inscripcionResponse = await fetch('http://localhost:3000/inscribirse', {
+              const inscripcionResponse = await fetch('http://192.168.1.65:3000/inscribirse', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json'
